@@ -244,6 +244,10 @@ $.formwizard = {
                     const isLastStep = currentIndex == $(form + " .step-anchor").find("li").length - 1;
                     let res;
 
+                    if (!$(form).data('yiiActiveForm').submitting) {
+                        return false;
+                    }
+
                     //check if the preview step then skip validation messages check
                     if ($.formwizard.options[formName].enablePreview && isLastStep) {
                         res = 0;
