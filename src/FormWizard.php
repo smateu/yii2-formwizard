@@ -770,6 +770,9 @@ JS;
         //hideTabularButtons
         $hideTabularButtons = ArrayHelper::getValue($step, 'hideTabularButtons', false);
 
+        //container class
+        $container_class = ArrayHelper::getValue($step, 'container_class', false);
+
         //check if tabular step
         if ($isTabularStep) {
             $this->_checkTabularConstraints($step['model']);
@@ -802,7 +805,7 @@ JS;
 
         if (!empty($step['model'])) {
             //start field container tag <div class="fields_container">
-            $html .= Html::beginTag('div', ["class" => "fields_container", 'data' => ['rows-limit' => $limitRows]]);
+            $html .= Html::beginTag('div', ["class" => $container_class? $container_class : "fields_container", 'data' => ['rows-limit' => $limitRows]]);
             //create step fields
             $html .= $this->createStepFields($index, $step, $isTabularStep, $limitRows);
         }
