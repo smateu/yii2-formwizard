@@ -934,6 +934,11 @@ JS;
             $isMultiField
         );
 
+        //if label is Closure
+        if ($label instanceof \Closure) {
+            $label = call_user_func($label, $model);
+        }
+
         //widget
         if ($widget) {
             $field = $field->widget($widget, $options)->label($label, $labelOptions);
