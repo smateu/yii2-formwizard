@@ -767,6 +767,9 @@ JS;
         //tabular rows limit
         $limitRows = ArrayHelper::getValue($step, 'limitRows', self::ROWS_UNLIMITED);
 
+        //hideTabularButtons
+        $hideTabularButtons = ArrayHelper::getValue($step, 'hideTabularButtons', false);
+
         //check if tabular step
         if ($isTabularStep) {
             $this->_checkTabularConstraints($step['model']);
@@ -787,7 +790,7 @@ JS;
         $html .= Html::tag('div', $formInfoText, ['class' => 'border-bottom border-gray pb-2']);
 
         //Add Row Buton to add fields dynamically
-        if ($isTabularStep) {
+        if ($isTabularStep && !$hideTabularButtons) {
             $html .= Html::button(
                 $this->iconAdd . '&nbsp;Add',
                 [
@@ -839,6 +842,9 @@ JS;
         //is array of models
         $isArrayOfModels = is_array($step['model']);
 
+        //hideTabularButtons
+        $hideTabularButtons = ArrayHelper::getValue($step, 'hideTabularButtons', false);
+
         $models = $step['model'];
 
         if (!$isArrayOfModels) {
@@ -879,8 +885,10 @@ JS;
                     //start the row constainer
                     $htmlFields .= Html::beginTag('div', ['id' => 'row_' . $modelIndex, 'class' => 'tabular-row']);
 
-                    //add the remove icon if edit mode and more than one rows
-                    ($modelIndex > 0) && $htmlFields .= Html::tag('i', '', ['class' => 'remove-row formwizard-x-ico', 'data' => ['rowid' => $modelIndex]]);
+                    if (!$hideTabularButtons) {
+                        //add the remove icon if edit mode and more than one rows
+                        ($modelIndex > 0) && $htmlFields .= Html::tag('i', '', ['class' => 'remove-row formwizard-x-ico', 'data' => ['rowid' => $modelIndex]]);
+                    }
                 } else {
                     //terminate the loop for the tabular step if the limit exceeds
                     break;
