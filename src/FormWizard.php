@@ -882,10 +882,11 @@ JS;
 
                 //limit not exceeded
                 if ($limitRows === self::ROWS_UNLIMITED || $limitRows > $modelIndex) {
-                    //start the row constainer
-                    $htmlFields .= Html::beginTag('div', ['id' => 'row_' . $modelIndex, 'class' => 'tabular-row']);
 
                     if (!$hideTabularButtons) {
+                        //start the row constainer
+                        $htmlFields .= Html::beginTag('div', ['id' => 'row_' . $modelIndex, 'class' => 'tabular-row']);
+
                         //add the remove icon if edit mode and more than one rows
                         ($modelIndex > 0) && $htmlFields .= Html::tag('i', '', ['class' => 'remove-row formwizard-x-ico', 'data' => ['rowid' => $modelIndex]]);
                     }
@@ -899,7 +900,7 @@ JS;
             $htmlFields .= $this->_createStepHtml($attributes, $modelIndex, $index, $model, $isTabularStep, $fieldConfig, $stepHeadings);
 
             //is tabular step
-            if ($isTabularStep) {
+            if ($isTabularStep && !$hideTabularButtons) {
 
                 //close row div
                 $htmlFields .= Html::endTag('div');
