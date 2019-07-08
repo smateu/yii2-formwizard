@@ -302,7 +302,8 @@ JS;
         foreach ($attributes as $attribute) {
 
             //attribute name
-            $attributeName = ($isTabularStep) ? "[$modelIndex]" . $attribute : $attribute;
+            $isTabularModel = substr((string)$modelIndex, 0, 1) != 'n';
+            $attributeName = ($isTabularStep && $isTabularModel) ? "[$modelIndex]" . $attribute : $attribute;
             $customConfigDefinedForField = $fieldConfig && isset($fieldConfig[$attribute]);
 
             //has heading for the field

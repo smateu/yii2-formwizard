@@ -854,6 +854,23 @@ JS;
             $models = [$step['model']];
         }
 
+        $modelsNotTabular = [];
+        if ($isTabularStep && isset($step['modelsNotTabular'])) {
+            $modelsNotTabular = $step['modelsNotTabular'];
+            if (!is_array($step['modelsNotTabular'])) {
+                $modelsNotTabular = [$step['modelsNotTabular']];
+            }
+            //Reindexa
+            $temp = [];
+            foreach ($modelsNotTabular as $k=>$v) {
+                $temp['n'.$k] = $v;
+            }
+            $modelsNotTabular = $temp;
+        }
+
+
+        $models = array_replace($models, $modelsNotTabular);
+
         //current step fields
         $fields = [];
 
@@ -874,7 +891,8 @@ JS;
                 $fields,
                 array_map(
                     function ($element) use ($model, $isTabularStep, $modelIndex) {
-                        return Html::getInputId($model, ($isTabularStep) ? "[$modelIndex]" . $element : $element);
+                        $isTabularModel = substr((string)$modelIndex, 0, 1) != 'n';
+                        return Html::getInputId($model, ($isTabularStep && $isTabularModel) ? "[$modelIndex]" . $element : $element);
                     },
                     $attributes
                 )
