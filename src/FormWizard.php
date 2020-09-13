@@ -869,7 +869,11 @@ JS;
         }
 
 
-        $models = array_replace($models, $modelsNotTabular);
+        if (isset($step['modelsNotTabularFirst'])) {
+            $models = array_replace($modelsNotTabular, $models);
+        } else {
+            $models = array_replace($models, $modelsNotTabular);
+        }
 
         //current step fields
         $fields = [];

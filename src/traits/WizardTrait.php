@@ -349,6 +349,18 @@ JS;
                 //default field population
                 $htmlFields .= $this->createDefaultInput($model, $attributeName);
             }
+
+            //add heading (SERGI)
+            if ($hasHeading) {
+                $headingFields = ArrayHelper::getColumn($stepHeadings, 'after', true);
+                if (in_array($attribute, $headingFields)) {
+                    $currentIndex = array_search($attribute, array_values($headingFields));
+                    $headingConfig = $stepHeadings[$currentIndex];
+
+                    //add heading
+                    $htmlFields .= $this->_addHeading($headingConfig);
+                }
+            }
         }
         return $htmlFields;
     }
@@ -362,11 +374,14 @@ JS;
      */
     private function _addHeading($headingConfig)
     {
-        $headingText = $headingConfig['text'];
+        $headingPrevious = ArrayHelper::getValue($headingConfig, 'previousHTML', '');
+        $headingNext = ArrayHelper::getValue($headingConfig, 'nextHTML', '');
+        $headingText = Html::encode(ArrayHelper::getValue($headingConfig, 'text', ''));
+        $headingRawText = ArrayHelper::getValue($headingConfig, 'rawtext', '');
         $headingClass = ArrayHelper::getValue($headingConfig, 'className', 'field-heading');
         $headingIcon = ArrayHelper::getValue($headingConfig, 'icon', self::ICON_HEADING);
 
-        return Html::tag('h3', $headingIcon . Html::encode($headingText), ['class' => $headingClass]);
+        return $headingPrevious . Html::tag('h3', $headingIcon . $headingText . $headingRawText, ['class' => $headingClass]) . $headingNext;
     }
 
     /**
